@@ -1,8 +1,8 @@
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { RpcCustomExceptionFilter } from '@/common';
 import { AppModule } from './app.module';
-import { RpcCustomExceptionFilter } from './common';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);

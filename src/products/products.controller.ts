@@ -5,7 +5,7 @@ import {
 	Get,
 	Inject,
 	Param,
-	ParseUUIDPipe,
+	ParseIntPipe,
 	Patch,
 	Post,
 	Query,
@@ -33,12 +33,12 @@ export class ProductsController {
 
 	@Get()
 	findAll(@Query() paginationDto: PaginationDto) {
-		return this.productsClient.send({ cmd: 'get_products' }, paginationDto);
+		return this.productsClient.send({ cmd: 'get_all_products' }, paginationDto);
 	}
 
 	@Get(':id')
-	async findOne(@Param('id', ParseUUIDPipe) id: string) {
-		return this.productsClient.send({ cmd: 'get_product' }, { id }).pipe(
+	async findOne(@Param('id', ParseIntPipe) id: string) {
+		return this.productsClient.send({ cmd: 'get_one_product' }, { id }).pipe(
 			catchError((error) => {
 				throw new RpcException(error);
 			}),
@@ -47,7 +47,7 @@ export class ProductsController {
 
 	@Patch(':id')
 	update(
-		@Param('id', ParseUUIDPipe) id: string,
+		@Param('id', ParseIntPipe) id: string,
 		@Body() updateProductDto: UpdateProductDto,
 	) {
 		return this.productsClient
@@ -60,7 +60,7 @@ export class ProductsController {
 	}
 
 	@Delete(':id')
-	remove(@Param('id', ParseUUIDPipe) id: string) {
+	remove(@Param('id', ParseIntPipe) id: string) {
 		return this.productsClient.send({ cmd: 'delete_product' }, { id }).pipe(
 			catchError((error) => {
 				throw new RpcException(error);

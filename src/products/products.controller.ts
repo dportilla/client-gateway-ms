@@ -42,8 +42,17 @@ export class ProductsController {
 			);
 	}
 
+	@Post('seed')
+	seed() {
+		return this.productsClient.send({ cmd: 'seed_products' }, {}).pipe(
+			catchError((error) => {
+				throw new RpcException(error);
+			}),
+		);
+	}
+
 	@Get(':id')
-	async findOne(@Param('id', ParseIntPipe) id: string) {
+	findOne(@Param('id', ParseIntPipe) id: number) {
 		return this.productsClient.send({ cmd: 'get_one_product' }, { id }).pipe(
 			catchError((error) => {
 				throw new RpcException(error);
@@ -53,7 +62,7 @@ export class ProductsController {
 
 	@Patch(':id')
 	update(
-		@Param('id', ParseIntPipe) id: string,
+		@Param('id', ParseIntPipe) id: number,
 		@Body() updateProductDto: UpdateProductDto,
 	) {
 		return this.productsClient
@@ -66,16 +75,11 @@ export class ProductsController {
 	}
 
 	@Delete(':id')
-	remove(@Param('id', ParseIntPipe) id: string) {
+	remove(@Param('id', ParseIntPipe) id: number) {
 		return this.productsClient.send({ cmd: 'delete_product' }, { id }).pipe(
 			catchError((error) => {
 				throw new RpcException(error);
 			}),
 		);
-	}
-
-	@Get('seed')
-	seed() {
-		return this.productsClient.send({ cmd: 'seed_products' }, {});
 	}
 }

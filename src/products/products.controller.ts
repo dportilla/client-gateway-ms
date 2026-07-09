@@ -73,4 +73,9 @@ export class ProductsController {
 			}),
 		);
 	}
+
+	@Get('seed')
+	seed() {
+		return this.productsClient.send({ cmd: 'seed_products' }, {});
+	}
 }
